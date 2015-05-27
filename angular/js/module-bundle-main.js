@@ -6033,7 +6033,8 @@ require('./_sidebar-toggle');
                 };
 
                 $urlRouterProvider
-                    .otherwise('/website-pages/home');
+                    //.otherwise('/website-pages/home');
+                	.otherwise('/login');
 
                 $stateProvider
                     .state('login', {

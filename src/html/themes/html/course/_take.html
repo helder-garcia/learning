@@ -28,76 +28,16 @@
         <span class="collapse-status collapse-close">Close</span>
     </div>
     <div class="list-group collapse in" id="curriculum-1">
-        <div class="list-group-item media" {% if angular %}data-target="::$state.current.name::"{% else %}data-target="{{ page.slug }}.html"{% endif %}>
+        <div class="list-group-item media ng-class:{ 'active': lesson.state == '1' }" {% if angular %}data-target="::$state.current.name::" ng-repeat="lesson in lessons"{% else %}data-target="{{ page.slug }}.html"{% endif %}>
             <div class="media-left">
                 <div class="text-crt">1.</div>
             </div>
             <div class="media-body">
-                <i class="fa fa-fw fa-circle text-green-300"></i>
-                Installation
+                <i class="fa fa-fw fa-circle ng-class:{ 'text-green-300': lesson.state == '0', 'text-blue-300': lesson.state == '1', 'text-grey-300': lesson.state == '2' };"></i>
+                ::lesson.title::
             </div>
             <div class="media-right">
-                <div class="width-100 text-right text-caption">2:03 min</div>
-            </div>
-        </div>
-        <div class="list-group-item media active" {% if angular %}data-target="::$state.current.name::"{% else %}data-target="{{ page.slug }}.html"{% endif %}>
-            <div class="media-left">
-                <div class="text-crt">2.</div>
-            </div>
-            <div class="media-body">
-                <i class="fa fa-fw fa-circle text-blue-300"></i>
-                The MVC architectural pattern
-            </div>
-            <div class="media-right">
-                <div class="width-100 text-right text-caption">25:01 min</div>
-            </div>
-        </div>
-        <div class="list-group-item media" {% if angular %}data-target="::$state.current.name::"{% else %}data-target="{{ page.slug }}.html"{% endif %}>
-            <div class="media-left">
-                <div class="text-crt">3.</div>
-            </div>
-            <div class="media-body">
-                <i class="fa fa-fw fa-circle text-grey-200"></i>
-                Database Models
-            </div>
-            <div class="media-right">
-                <div class="width-100 text-right text-caption">12:10 min</div>
-            </div>
-        </div>
-        <div class="list-group-item media" {% if angular %}data-target="::$state.current.name::"{% else %}data-target="{{ page.slug }}.html"{% endif %}>
-            <div class="media-left">
-                <div class="text-crt">4.</div>
-            </div>
-            <div class="media-body">
-                <i class="fa fa-fw fa-circle text-grey-200"></i>
-                Database Access
-            </div>
-            <div class="media-right">
-                <div class="width-100 text-right text-caption">1:25 min</div>
-            </div>
-        </div>
-        <div class="list-group-item media" {% if angular %}data-target="::$state.current.name::"{% else %}data-target="{{ page.slug }}.html"{% endif %}>
-            <div class="media-left">
-                <div class="text-crt">5.</div>
-            </div>
-            <div class="media-body">
-                <i class="fa fa-fw fa-circle text-grey-200"></i>
-                Eloquent Basics
-            </div>
-            <div class="media-right">
-                <div class="width-100 text-right text-caption">22:30 min</div>
-            </div>
-        </div>
-        <div class="list-group-item media" {% if angular %}data-target="{{ slug or 'app' }}-student.take-quiz"{% else %}data-target="{{ slug or 'app' }}-take-quiz.html"{% endif %}>
-            <div class="media-left">
-                <div class="text-crt">6.</div>
-            </div>
-            <div class="media-body">
-                <i class="fa fa-fw fa-circle text-grey-200"></i>
-                Take Quiz
-            </div>
-            <div class="media-right">
-                <div class="width-100 text-right text-caption">10:00 min</div>
+                <div class="width-100 text-right text-caption">::lesson.duration::</div>
             </div>
         </div>
     </div>

@@ -204,6 +204,12 @@
                         controller: ['$scope', function($scope){
                             $scope.app.settings.htmlClass = htmlClass.website;
                             $scope.app.settings.bodyClass = '';
+                            $scope.lessons = [
+                                 { title: 'Lesson 1', state: '0', duration: '1h20m'},
+                                 { title: 'Lesson 2', state: '0', duration: '1h00m'},
+                                 { title: 'Lesson 3', state: '1', duration: '0h30m'},
+                                 { title: 'Lesson 4', state: '2', duration: '1h40m'}
+                            ];
                         }]
                     })
                     .state('website-student.course-forums', {

@@ -76,6 +76,15 @@ Will generate dist/themes/html and dist/themes/angular directories containing th
  grunt --theme html
 ```
 
+### Testing Environment
+
+The AEC-API must be started so the app can fetch data. Running on localhost can lead to Cross Domain access restrictions.
+To circunvent this open Chrome with web security disabled:
+
+```
+open -a Google\ Chrome --args --disable-web-security
+```
+
 ### Credit
 ------
 Helder Garcia <br />

@@ -884,6 +884,15 @@ require('./_sidebar-toggle-bar');
                 $rootScope.$stateParams = $stateParams;
             }
         ])
+        .factory('dataFactory', ['$http', function($http) {
+	    	var urlBase = 'http://localhost:1337/';
+	    	var dataFactory = {};
+	    	
+	    	dataFactory.getLessons = function () {
+	    		return $http.get(urlBase + 'lesson');
+	    	};
+	    	return dataFactory;
+	     }])
         .config(
         [ '$stateProvider', '$urlRouterProvider',
             function ($stateProvider, $urlRouterProvider) {
@@ -1077,15 +1086,20 @@ require('./_sidebar-toggle-bar');
                     .state('website-student.take-course', {
                         url: '/take-course',
                         templateUrl: 'website/student-take-course.html',
-                        controller: ['$scope', function($scope){
+                        controller: ['$scope', 'dataFactory', function($scope, dataFactory){
                             $scope.app.settings.htmlClass = htmlClass.website;
                             $scope.app.settings.bodyClass = '';
-                            $scope.lessons = [
-                                 { title: 'Lesson 1', state: '0', duration: '1h20m'},
-                                 { title: 'Lesson 2', state: '0', duration: '1h00m'},
-                                 { title: 'Lesson 3', state: '1', duration: '0h30m'},
-                                 { title: 'Lesson 4', state: '2', duration: '1h40m'}
-                            ];
+                            $scope.lessons = {};
+                            getLessons();
+                            function getLessons() {
+                            	dataFactory.getLessons()
+                            		.success(function (lessons) {
+                            			$scope.lessons = lessons;
+                            		})
+                            		.error(function (error) {
+                            			$scope.status = 'Unable to load data: ' + error.message;
+                            		});
+                            }
                         }]
                     })
                     .state('website-student.course-forums', {
@@ -1517,7 +1531,6 @@ require('./_sidebar-toggle-bar');
             }
         ]
     );
-
 })();
 },{}],"/Users/hlbog/git/learning/src/js/themes/angular/angular/directives/countdown.js":[function(require,module,exports){
 (function () {

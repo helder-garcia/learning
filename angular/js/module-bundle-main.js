@@ -6500,9 +6500,20 @@ require('./_sidebar-toggle');
                     .state('app-student.take-course', {
                         url: '/take-course',
                         templateUrl: 'app/student-take-course.html',
-                        controller: ['$scope', function($scope){
+                        controller: ['$scope', 'dataFactory', function($scope, dataFactory){
                             $scope.app.settings.htmlClass = htmlClass.appl1r3;
                             $scope.app.settings.bodyClass = '';
+                            $scope.lessons = {};
+                            getLessons();
+                            function getLessons() {
+                            	dataFactory.getLessons()
+                            		.success(function (lessons) {
+                            			$scope.lessons = lessons;
+                            		})
+                            		.error(function (error) {
+                            			$scope.status = 'Unable to load data: ' + error.message;
+                            		});
+                            }
                         }]
                     })
                     .state('app-student.take-quiz', {

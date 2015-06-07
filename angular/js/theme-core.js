@@ -884,14 +884,22 @@ require('./_sidebar-toggle-bar');
                 $rootScope.$stateParams = $stateParams;
             }
         ])
-        .factory('dataFactory', ['$http', function($http) {
+        .factory('lessonFactory', ['$http', function($http) {
 	    	var urlBase = 'http://localhost:1337/';
-	    	var dataFactory = {};
-	    	
-	    	dataFactory.getLessons = function () {
+	    	var lessonFactory = {};	    	
+	    	lessonFactory.getLessons = function () {
 	    		return $http.get(urlBase + 'lesson');
 	    	};
-	    	return dataFactory;
+	    	return lessonFactory;
+	     }])
+        .factory('moduleFactory', ['$http', function($http) {
+	    	var urlBase = 'http://localhost:1337/';
+	    	var moduleFactory = {};
+	    	moduleFactory.getModules = function () {
+	    		return $http.get(urlBase + 'module');
+	    	};
+	    	
+	    	return moduleFactory;
 	     }])
         .config(
         [ '$stateProvider', '$urlRouterProvider',
@@ -1086,13 +1094,24 @@ require('./_sidebar-toggle-bar');
                     .state('website-student.take-course', {
                         url: '/take-course',
                         templateUrl: 'website/student-take-course.html',
-                        controller: ['$scope', 'dataFactory', function($scope, dataFactory){
+                        controller: ['$scope', 'lessonFactory', 'moduleFactory', function($scope, lessonFactory, moduleFactory){
                             $scope.app.settings.htmlClass = htmlClass.website;
                             $scope.app.settings.bodyClass = '';
+                            $scope.modules = {};
                             $scope.lessons = {};
+                            getModules();
                             getLessons();
+                            function getModules() {
+                            	moduleFactory.getModules()
+                            		.success(function (modules) {
+                            			$scope.modules = modules;
+                            		})
+                            		.error(function (error) {
+                            			$scope.status = 'Unable to load data: ' + error.message;
+                            		});
+                            }
                             function getLessons() {
-                            	dataFactory.getLessons()
+                            	lessonFactory.getLessons()
                             		.success(function (lessons) {
                             			$scope.lessons = lessons;
                             		})
@@ -1366,13 +1385,24 @@ require('./_sidebar-toggle-bar');
                     .state('app-student.take-course', {
                         url: '/take-course',
                         templateUrl: 'app/student-take-course.html',
-                        controller: ['$scope', 'dataFactory', function($scope, dataFactory){
+                        controller: ['$scope', 'moduleFactory', 'lessonFactory', function($scope, moduleFactory, lessonFactory){
                             $scope.app.settings.htmlClass = htmlClass.appl1r3;
                             $scope.app.settings.bodyClass = '';
+                            $scope.modules = {};
                             $scope.lessons = {};
+                            getModules();
                             getLessons();
+                            function getModules() {
+                            	moduleFactory.getModules()
+                            		.success(function (modules) {
+                            			$scope.modules = modules;
+                            		})
+                            		.error(function (error) {
+                            			$scope.status = 'Unable to load data: ' + error.message;
+                            		});
+                            }
                             function getLessons() {
-                            	dataFactory.getLessons()
+                            	lessonFactory.getLessons()
                             		.success(function (lessons) {
                             			$scope.lessons = lessons;
                             		})

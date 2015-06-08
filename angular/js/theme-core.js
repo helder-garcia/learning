@@ -901,6 +901,15 @@ require('./_sidebar-toggle-bar');
 	    	
 	    	return moduleFactory;
 	     }])
+        .factory('contentFactory', ['$http', function($http) {
+	    	var urlBase = 'http://localhost:1337/';
+	    	var contentFactory = {};
+	    	contentFactory.getContent = function (val) {
+	    		return $http.get(urlBase + 'content' + '/' + val);
+	    	};
+	    	
+	    	return contentFactory;
+	     }])
         .config(
         [ '$stateProvider', '$urlRouterProvider',
             function ($stateProvider, $urlRouterProvider) {
@@ -1385,13 +1394,22 @@ require('./_sidebar-toggle-bar');
                     .state('app-student.take-course', {
                         url: '/take-course',
                         templateUrl: 'app/student-take-course.html',
-                        controller: ['$scope', 'moduleFactory', 'lessonFactory', function($scope, moduleFactory, lessonFactory){
+                        controller: ['$scope', 'moduleFactory', 'lessonFactory', 'contentFactory', function($scope, moduleFactory, lessonFactory, contentFactory){
                             $scope.app.settings.htmlClass = htmlClass.appl1r3;
                             $scope.app.settings.bodyClass = '';
                             $scope.modules = {};
                             $scope.lessons = {};
                             getModules();
                             getLessons();
+                            $scope.lessonClicked = function(val) {
+                                contentFactory.getContent(val)
+                                	.success(function (content) {
+                                		$scope.content = content;
+                            		})
+                            		.error(function (error) {
+                            			$scope.status = 'Unable to load data: ' + error.message;
+                            		});
+                            };
                             function getModules() {
                             	moduleFactory.getModules()
                             		.success(function (modules) {

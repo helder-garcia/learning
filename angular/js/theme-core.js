@@ -1394,7 +1394,7 @@ require('./_sidebar-toggle-bar');
                     .state('app-student.take-course', {
                         url: '/take-course',
                         templateUrl: 'app/student-take-course.html',
-                        controller: ['$scope', 'moduleFactory', 'lessonFactory', 'contentFactory', function($scope, moduleFactory, lessonFactory, contentFactory){
+                        controller: ['$scope', 'moduleFactory', 'lessonFactory', 'contentFactory', '$sce', function($scope, moduleFactory, lessonFactory, contentFactory, $sce){
                             $scope.app.settings.htmlClass = htmlClass.appl1r3;
                             $scope.app.settings.bodyClass = '';
                             $scope.modules = {};
@@ -1404,7 +1404,8 @@ require('./_sidebar-toggle-bar');
                             $scope.lessonClicked = function(val) {
                                 contentFactory.getContent(val)
                                 	.success(function (content) {
-                                		$scope.content = content;
+                                		$scope.title = $sce.trustAsHtml(content.title);
+                                		$scope.content = $sce.trustAsHtml(content.introtext);
                             		})
                             		.error(function (error) {
                             			$scope.status = 'Unable to load data: ' + error.message;
